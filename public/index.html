@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DnD Chronicles</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/cyrillic-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/cyrillic-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/cinzel@latest/latin-700-normal.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-top-row">
+    <div class="logo" onclick="showPage('home')">🐉 DnD Chronicles</div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost btn-sm nav-music-btn" onclick="toggleMusicPlayer()" title="Музыкальный плеер">🎵</button>
+      <button id="nav-login-btn" class="btn btn-secondary btn-sm" onclick="showPage('auth');renderAuthPage('login')">Войти</button>
+      <div id="nav-user-block" style="display:none; align-items:center; gap:0.5rem; flex-wrap:nowrap;">
+        <span id="nav-role-badge" class="badge badge-gold" style="display:none;"></span>
+        <span class="nav-user-avatar">🧙</span>
+        <span id="nav-user-name" class="nav-user-name-text"></span>
+        <button class="btn btn-secondary btn-sm" onclick="logout()">Выйти</button>
+      </div>
+      <button id="nav-create-btn" class="btn btn-primary btn-sm" onclick="showPage('character')">Создать героя</button>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a data-page="home" onclick="showPage('home')" class="active">Главная</a></li>
+    <li><a data-page="bestiary" onclick="showPage('bestiary')">Бестиарий</a></li>
+    <li><a data-page="spells" onclick="showPage('spells')">Заклинания</a></li>
+    <li><a data-page="reference" onclick="showPage('reference')">Справочник</a></li>
+    <li><a data-page="campaigns" onclick="showPage('campaigns')">Кампании</a></li>
+    <li><a data-page="mychars" onclick="showPage('mychars')">Мои персонажи</a></li>
+    <li><a data-page="dice" onclick="showPage('dice')">🎲 Кубики</a></li>
+  </ul>
+</nav>
+
+<!-- ========== AUTH ========== -->
+<div class="page" id="page-auth"></div>
+
+<!-- ========== HOME ========== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <h1>Создай своего<br>легендарного героя</h1>
+    <p>Добро пожаловать в мир Dungeons & Dragons. Создавайте персонажей, исследуйте бестиарий, изучайте заклинания и управляйте своими приключениями в одном современном приложении.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="showPage('character')">🎭 Создать персонажа</button>
+      <button class="btn btn-secondary" onclick="showPage('reference')">📖 Подробнее</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Популярные классы</h2>
+    <div class="grid">
+      <div class="card" onclick="showPage('reference'); switchTab('classes')">
+        <div class="card-icon">⚔️</div>
+        <h3>Воин</h3>
+        <p>Настоящий мастер ближнего боя, обладающий высокой защитой и большим запасом здоровья.</p>
+        <div class="card-meta"><span class="badge">d10</span><span class="badge badge-purple">Сила</span></div>
+      </div>
+      <div class="card" onclick="showPage('reference'); switchTab('classes')">
+        <div class="card-icon">🧙</div>
+        <h3>Волшебник</h3>
+        <p>Использует древнюю магию и способен изменить исход любого сражения.</p>
+        <div class="card-meta"><span class="badge">d6</span><span class="badge badge-purple">Интеллект</span></div>
+      </div>
+      <div class="card" onclick="showPage('reference'); switchTab('classes')">
+        <div class="card-icon">🏹</div>
+        <h3>Следопыт</h3>
+        <p>Мастер дальнего боя и исследования неизведанных земель.</p>
+        <div class="card-meta"><span class="badge">d10</span><span class="badge badge-purple">Ловкость</span></div>
+      </div>
+      <div class="card" onclick="showPage('reference'); switchTab('classes')">
+        <div class="card-icon">🛡️</div>
+        <h3>Паладин</h3>
+        <p>Священный воин, использующий силу света для защиты союзников.</p>
+        <div class="card-meta"><span class="badge">d10</span><span class="badge badge-purple">Харизма</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Последние монстры</h2>
+    <div class="grid">
+      <div class="card" onclick="showPage('bestiary')">
+        <div class="card-icon">👹</div>
+        <h3>Орк</h3>
+        <p>Жестокий противник, опасный в ближнем бою.</p>
+        <div class="card-meta"><span class="badge">CR 1/2</span><span class="badge badge-red">Гуманоид</span></div>
+      </div>
+      <div class="card" onclick="showPage('bestiary')">
+        <div class="card-icon">👁️</div>
+        <h3>Бехолдер</h3>
+        <p>Легендарное существо, использующее смертельные лучи.</p>
+        <div class="card-meta"><span class="badge">CR 13</span><span class="badge badge-red">Аберрация</span></div>
+      </div>
+      <div class="card" onclick="showPage('bestiary')">
+        <div class="card-icon">🐉</div>
+        <h3>Красный дракон</h3>
+        <p>Один из сильнейших монстров во всей вселенной D&D.</p>
+        <div class="card-meta"><span class="badge">CR 24</span><span class="badge badge-red">Дракон</span></div>
+      </div>
+      <div class="card" onclick="showPage('bestiary')">
+        <div class="card-icon">🧟</div>
+        <h3>Лич</h3>
+        <p>Древний маг, победивший смерть ради абсолютной силы.</p>
+        <div class="card-meta"><span class="badge">CR 21</span><span class="badge badge-red">Нежить</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Возможности сайта</h2>
+    <div class="grid">
+      <div class="card" onclick="showPage('character')">
+        <div class="card-icon">👤</div>
+        <h3>Создание персонажей</h3>
+        <p>Создавайте собственных героев, повышайте уровень, управляйте инвентарем и заклинаниями.</p>
+      </div>
+      <div class="card" onclick="showPage('reference')">
+        <div class="card-icon">📖</div>
+        <h3>Полный справочник</h3>
+        <p>Вся информация о классах, расах, оружии, броне и особенностях.</p>
+      </div>
+      <div class="card" onclick="showPage('campaigns')">
+        <div class="card-icon">🎲</div>
+        <h3>Кампании</h3>
+        <p>Dungeon Master сможет создавать кампании, приглашать игроков и вести приключения.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👑</div>
+        <h3>Администрирование</h3>
+        <p>Полное управление пользователями, монстрами, заклинаниями и справочниками.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ========== BESTIARY ========== -->
+<div class="page" id="page-bestiary">
+  <section class="section">
+    <h2 class="section-title">Бестиарий</h2>
+    <p style="color: var(--text-dim); margin-bottom: 2rem;">Исследуйте монстров и существ мира D&D. Используйте фильтры для поиска подходящего противника.</p>
+    
+    <div class="filters">
+      <div class="search-box">
+        <input type="text" id="bestiary-search" placeholder="Поиск по имени..." oninput="filterBestiary()">
+      </div>
+      <select id="bestiary-type" onchange="filterBestiary()">
+        <option value="">Все типы</option>
+        <option value="Гуманоид">Гуманоид</option>
+        <option value="Дракон">Дракон</option>
+        <option value="Нежить">Нежить</option>
+        <option value="Аберрация">Аберрация</option>
+        <option value="Зверь">Зверь</option>
+        <option value="Элементаль">Элементаль</option>
+        <option value="Фея">Фея</option>
+      </select>
+      <select id="bestiary-cr" onchange="filterBestiary()">
+        <option value="">Любой CR</option>
+        <option value="low">CR 0-2 (Лёгкие)</option>
+        <option value="mid">CR 3-8 (Средние)</option>
+        <option value="high">CR 9-15 (Сложные)</option>
+        <option value="deadly">CR 16+ (Смертельные)</option>
+      </select>
+    </div>
+
+    <div class="grid" id="bestiary-grid"></div>
+  </section>
+</div>
+
+<!-- ========== SPELLS ========== -->
+<div class="page" id="page-spells">
+  <section class="section">
+    <h2 class="section-title">Книга заклинаний</h2>
+    <p style="color: var(--text-dim); margin-bottom: 2rem;">Полная коллекция заклинаний всех классов магии. Фильтруйте по уровню, школе и классу.</p>
+    
+    <div class="filters">
+      <div class="search-box">
+        <input type="text" id="spell-search" placeholder="Поиск заклинания..." oninput="filterSpells()">
+      </div>
+      <select id="spell-level" onchange="filterSpells()">
+        <option value="">Все уровни</option>
+        <option value="0">Заговоры (0)</option>
+        <option value="1">1-й круг</option>
+        <option value="2">2-й круг</option>
+        <option value="3">3-й круг</option>
+        <option value="4">4-й круг</option>
+        <option value="5">5-й круг</option>
+        <option value="6">6-й круг</option>
+        <option value="7">7-й круг</option>
+        <option value="8">8-й круг</option>
+        <option value="9">9-й круг</option>
+      </select>
+      <select id="spell-school" onchange="filterSpells()">
+        <option value="">Все школы</option>
+        <option value="Воплощение">Воплощение</option>
+        <option value="Преобразование">Преобразование</option>
+        <option value="Прорицание">Прорицание</option>
+        <option value="Ограждение">Ограждение</option>
+        <option value="Вызов">Вызов</option>
+        <option value="Воплощение">Воплощение</option>
+        <option value="Некромантия">Некромантия</option>
+        <option value="Преобразование">Преобразование</option>
+      </select>
+      <select id="spell-class" onchange="filterSpells()">
+        <option value="">Все классы</option>
+        <option value="Волшебник">Волшебник</option>
+        <option value="Жрец">Жрец</option>
+        <option value="Бард">Бард</option>
+        <option value="Колдун">Колдун</option>
+        <option value="Друид">Друид</option>
+        <option value="Паладин">Паладин</option>
+      </select>
+    </div>
+
+    <div id="spells-list" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+  </section>
+</div>
+
+<!-- ========== REFERENCE ========== -->
+<div class="page" id="page-reference">
+  <section class="section">
+    <h2 class="section-title">Справочник</h2>
+    <p style="color: var(--text-dim); margin-bottom: 2rem;">Вся необходимая информация для создания и развития вашего персонажа.</p>
+    
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('classes')">⚔️ Классы</button>
+      <button class="tab" onclick="switchTab('races')">🧝 Расы</button>
+      <button class="tab" onclick="switchTab('weapons')">🗡️ Оружие</button>
+      <button class="tab" onclick="switchTab('armor')">🛡️ Броня</button>
+      <button class="tab" onclick="switchTab('equipment')">🎒 Снаряжение</button>
+    </div>
+
+    <div class="tab-content active" id="tab-classes"></div>
+    <div class="tab-content" id="tab-races"></div>
+    <div class="tab-content" id="tab-weapons"></div>
+    <div class="tab-content" id="tab-armor"></div>
+    <div class="tab-content" id="tab-equipment"></div>
+  </section>
+</div>
+
+<!-- ========== CAMPAIGNS ========== -->
+<div class="page" id="page-campaigns">
+  <section class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+      <div>
+        <h2 class="section-title" style="margin-bottom: 0.5rem;">Кампании</h2>
+        <p style="color: var(--text-dim);">Ваши приключения и кампании Dungeon Master.</p>
+      </div>
+      <button class="btn btn-primary" onclick="renderCreateCampaignForm()">➕ Создать кампанию</button>
+    </div>
+
+    <div class="filters">
+      <div class="search-box">
+        <input type="text" id="camp-search" placeholder="Поиск кампании..." oninput="filterCampaigns()">
+      </div>
+      <select id="camp-filter" onchange="filterCampaigns()">
+        <option value="">Все статусы</option>
+        <option value="active">Активные</option>
+        <option value="paused">На паузе</option>
+        <option value="completed">Завершённые</option>
+      </select>
+    </div>
+
+    <div class="grid" id="campaigns-grid"></div>
+  </section>
+</div>
+
+<!-- ========== CHARACTER CREATOR ========== -->
+<div class="page" id="page-character">
+  <section class="section">
+    <h2 class="section-title">Создание персонажа</h2>
+    <p style="color: var(--text-dim); margin-bottom: 2rem;">Пройдите все шаги, чтобы создать своего уникального героя.</p>
+
+    <div class="stepper">
+      <div class="step active" data-step="1">1. Имя и раса</div>
+      <div class="step" data-step="2">2. Класс</div>
+      <div class="step" data-step="3">3. Характеристики</div>
+      <div class="step" data-step="4">4. Предыстория</div>
+      <div class="step" data-step="5">5. Готово</div>
+    </div>
+
+    <div class="step-content active" id="step-1">
+      <div class="form-group">
+        <label>Имя персонажа</label>
+        <input type="text" id="char-name" placeholder="Например: Элминстер">
+      </div>
+      <div class="form-group">
+        <label>Раса</label>
+        <select id="char-race">
+          <option value="">Выберите расу...</option>
+          <option value="Человек">Человек</option>
+          <option value="Эльф">Эльф</option>
+          <option value="Дварф">Дварф</option>
+          <option value="Полурослик">Полурослик</option>
+          <option value="Драконорождённый">Драконорождённый</option>
+          <option value="Гном">Гном</option>
+          <option value="Полуорк">Полуорк</option>
+          <option value="Тифлинг">Тифлинг</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Возраст</label>
+        <input type="number" id="char-age" placeholder="25" min="1" max="1000">
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+        <button class="btn btn-primary" onclick="nextStep(2)">Далее →</button>
+      </div>
+    </div>
+
+    <div class="step-content" id="step-2">
+      <div class="form-group">
+        <label>Класс персонажа</label>
+        <select id="char-class">
+          <option value="">Выберите класс...</option>
+          <option value="Воин">⚔️ Воин</option>
+          <option value="Волшебник">🧙 Волшебник</option>
+          <option value="Плут">🗡️ Плут</option>
+          <option value="Жрец">✝️ Жрец</option>
+          <option value="Бард">🎵 Бард</option>
+          <option value="Следопыт">🏹 Следопыт</option>
+          <option value="Паладин">🛡️ Паладин</option>
+          <option value="Варвар">💢 Варвар</option>
+          <option value="Друид">🌿 Друид</option>
+          <option value="Колдун">🔮 Колдун</option>
+          <option value="Монах">🥋 Монах</option>
+          <option value="Чародей">✨ Чародей</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Уровень</label>
+        <input type="number" id="char-level" value="1" min="1" max="20">
+      </div>
+      <div class="form-group">
+        <label>Мировоззрение</label>
+        <select id="char-alignment">
+          <option value="Законно-добрый">Законно-добрый</option>
+          <option value="Нейтрально-добрый">Нейтрально-добрый</option>
+          <option value="Хаотично-добрый">Хаотично-добрый</option>
+          <option value="Истинно нейтральный" selected>Истинно нейтральный</option>
+          <option value="Законно-злой">Законно-злой</option>
+          <option value="Нейтрально-злой">Нейтрально-злой</option>
+          <option value="Хаотично-злой">Хаотично-злой</option>
+        </select>
+      </div>
+      <div style="display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem;">
+        <button class="btn btn-secondary" onclick="nextStep(1)">← Назад</button>
+        <button class="btn btn-primary" onclick="nextStep(3)">Далее →</button>
+      </div>
+    </div>
+
+    <div class="step-content" id="step-3">
+      <!-- Rendered dynamically by renderStatStep() in character-creator.js -->
+      <div style="color:var(--text-dim);text-align:center;padding:2rem;">Загрузка…</div>
+    </div>
+
+    <div class="step-content" id="step-4">
+      <div class="form-group">
+        <label>Предыстория</label>
+        <select id="char-background">
+          <option value="Бродяга">Бродяга</option>
+          <option value="Военный">Военный</option>
+          <option value="Мудрец">Мудрец</option>
+          <option value="Народный герой">Народный герой</option>
+          <option value="Преступник">Преступник</option>
+          <option value="Слуга">Слуга</option>
+          <option value="Благородный">Благородный</option>
+          <option value="Отшельник">Отшельник</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Внешность</label>
+        <textarea id="char-appearance" placeholder="Опишите внешность вашего персонажа..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Идеалы</label>
+        <textarea id="char-ideals" placeholder="Что движет вашим персонажем?"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Предыстория (биография)</label>
+        <textarea id="char-bio" placeholder="Расскажите историю вашего героя..."></textarea>
+      </div>
+      <div style="display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem;">
+        <button class="btn btn-secondary" onclick="nextStep(3)">← Назад</button>
+        <button class="btn btn-primary" onclick="nextStep(5)">Завершить →</button>
+      </div>
+    </div>
+
+    <div class="step-content" id="step-5">
+      <div style="text-align: center; padding: 2rem;">
+        <div style="font-size: 5rem; margin-bottom: 1rem;">🎉</div>
+        <h3 style="font-size: 1.75rem; color: var(--accent); margin-bottom: 1rem;">Персонаж создан!</h3>
+        <p style="color: var(--text-dim); margin-bottom: 2rem;">Ваш герой готов к великим приключениям.</p>
+        <div id="character-summary" style="text-align: left; max-width: 500px; margin: 0 auto;"></div>
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+          <button class="btn btn-secondary" onclick="resetCharacter()">🔄 Создать нового</button>
+          <button class="btn btn-primary" onclick="saveCharacter()">💾 Сохранить</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ========== MY CHARACTERS ========== -->
+<div class="page" id="page-mychars">
+  <section class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+      <div>
+        <h2 class="section-title" style="margin-bottom: 0.5rem;">Мои персонажи</h2>
+        <p style="color: var(--text-dim);">Все герои, созданные на этом устройстве.</p>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('character')">➕ Создать персонажа</button>
+    </div>
+    <div class="grid" id="mychars-grid"></div>
+  </section>
+</div>
+
+<!-- ========== CHARACTER SHEET ========== -->
+<div class="page" id="page-charsheet">
+  <section class="section" id="charsheet-content"></section>
+</div>
+
+<!-- ========== DICE ROLLER ========== -->
+<div class="page" id="page-dice">
+  <section class="section">
+    <h2 class="section-title" style="margin-bottom:0.5rem;">🎲 Бросок кубиков</h2>
+    <p style="color:var(--text-dim); margin-bottom:2rem;">Выбери кубик и количество бросков.</p>
+
+    <div class="dice-panel">
+
+      <!-- Dice picker -->
+      <div class="dice-types" id="dice-types">
+        <button class="die-btn active" data-die="4"  onclick="selectDie(4)">d4</button>
+        <button class="die-btn"        data-die="6"  onclick="selectDie(6)">d6</button>
+        <button class="die-btn"        data-die="8"  onclick="selectDie(8)">d8</button>
+        <button class="die-btn"        data-die="10" onclick="selectDie(10)">d10</button>
+        <button class="die-btn"        data-die="12" onclick="selectDie(12)">d12</button>
+        <button class="die-btn active2" data-die="20" onclick="selectDie(20)">d20</button>
+        <button class="die-btn"        data-die="100" onclick="selectDie(100)">d100</button>
+      </div>
+
+      <!-- Count + modifier -->
+      <div class="dice-controls">
+        <div class="dice-ctrl-group">
+          <label>Количество</label>
+          <div class="dice-stepper">
+            <button onclick="changeCount(-1)">−</button>
+            <span id="dice-count">1</span>
+            <button onclick="changeCount(1)">+</button>
+          </div>
+        </div>
+        <div class="dice-ctrl-group">
+          <label>Модификатор</label>
+          <div class="dice-stepper">
+            <button onclick="changeMod(-1)">−</button>
+            <span id="dice-mod">0</span>
+            <button onclick="changeMod(1)">+</button>
+          </div>
+        </div>
+        <div class="dice-ctrl-group">
+          <label>Метка (необязательно)</label>
+          <input id="dice-label" type="text" placeholder="Атака, Урон…" class="dice-label-input">
+        </div>
+      </div>
+
+      <!-- Roll button + result -->
+      <div class="dice-roll-area">
+        <button class="btn btn-primary dice-roll-btn" onclick="rollDice()">
+          Бросить
+        </button>
+        <div id="dice-result" class="dice-result hidden">
+          <div class="dice-result-formula" id="dice-result-formula"></div>
+          <div class="dice-result-total" id="dice-result-total"></div>
+          <div class="dice-result-breakdown" id="dice-result-breakdown"></div>
+        </div>
+      </div>
+
+      <!-- Quick rolls -->
+      <div class="dice-quick">
+        <span style="color:var(--text-dim); font-size:0.85rem; margin-right:0.5rem;">Быстро:</span>
+        <button class="badge badge-clickable" onclick="quickRoll(1,20,0,'Проверка')">1d20</button>
+        <button class="badge badge-clickable" onclick="quickRoll(1,20,0,'С преим.')">Преимущество</button>
+        <button class="badge badge-clickable" onclick="quickRoll(1,20,0,'Без преим.')">Помеха</button>
+        <button class="badge badge-clickable" onclick="quickRoll(2,6,0,'Урон')">2d6</button>
+        <button class="badge badge-clickable" onclick="quickRoll(1,8,0,'Урон')">1d8</button>
+        <button class="badge badge-clickable" onclick="quickRoll(4,6,0,'Характ.')">4d6 drop lowest</button>
+      </div>
+    </div>
+
+    <!-- 3D Die Canvas -->
+    <div class="dice-3d-wrap" id="dice-3d-wrap">
+      <canvas id="dice-3d-canvas"></canvas>
+      <div class="dice-3d-hint" id="dice-3d-hint">нажми «Бросить»</div>
+    </div>
+
+    <!-- History -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin:2rem 0 1rem;">
+      <h3 style="color:var(--accent);">История бросков</h3>
+      <button class="btn btn-secondary btn-sm" onclick="clearDiceHistory()">Очистить</button>
+    </div>
+    <div id="dice-history" class="dice-history">
+      <div class="empty" style="padding:2rem 0;">
+        <div class="empty-icon">🎲</div>
+        <p>Бросков пока не было</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ========== MODALS ========== -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<footer>
+  <div class="logo">🐉 DnD Chronicles</div>
+  <p>Создано для игроков и Dungeon Masters.</p>
+  <p style="margin-top: 0.5rem; font-size: 0.85rem;">© 2026 Все права защищены.</p>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/data/monsters.js"></script>
+<script src="js/data/spells.js"></script>
+<script src="js/data/reference.js"></script>
+<script src="js/data/campaigns.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/bestiary.js"></script>
+<script src="js/spells.js"></script>
+<script src="js/reference.js"></script>
+<script src="js/campaigns.js"></script>
+<script src="js/character-creator.js"></script>
+<script src="js/character-sheet.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/dice.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/dice3d.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/print.js"></script>
+<script src="js/music-player.js"></script>
+<script src="js/init.js"></script>
+</body>
+</html>
+
